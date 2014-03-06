@@ -1,11 +1,19 @@
 #!/bin/sh -e
 
-# Edit the following to change the name of the database user that will be created:
-APP_DB_USER=myapp
-APP_DB_PASS=dbpass
+# The tdar db user
+APP_DB_USER=tdar
 
-# Edit the following to change the name of the database that is created (defaults to the user name)
-APP_DB_NAME=$APP_DB_USER
+# The tdar dev db password (don't use this in the wild!)
+APP_DB_PASS=tdar
+
+# The tdar data database
+DATA_DB_NAME=tdardata
+
+# The tdar metadata database
+META_DB_NAME=tdarmetadata
+
+# The tdar gis database
+GIS_DB_NAME=tdargis
 
 # Edit the following to change the version of PostgreSQL that is installed
 PG_VERSION=9.3
@@ -17,7 +25,7 @@ print_db_usage () {
   echo "Your PostgreSQL database has been setup and can be accessed on your local machine on the forwarded port (default: 15432)"
   echo "  Host: localhost"
   echo "  Port: 15432"
-  echo "  Database: $APP_DB_NAME"
+  echo "  Database: $DATA_DB_NAME"
   echo "  Username: $APP_DB_USER"
   echo "  Password: $APP_DB_PASS"
   echo ""
@@ -28,13 +36,13 @@ print_db_usage () {
   echo "psql access to app database user via VM:"
   echo "  vagrant ssh"
   echo "  sudo su - postgres"
-  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost $APP_DB_NAME"
+  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost $DATA_DB_NAME"
   echo ""
   echo "Env variable for application development:"
-  echo "  DATABASE_URL=postgresql://$APP_DB_USER:$APP_DB_PASS@localhost:15432/$APP_DB_NAME"
+  echo "  DATABASE_URL=postgresql://$APP_DB_USER:$APP_DB_PASS@localhost:15432/$DATA_DB_NAME"
   echo ""
   echo "Local command to access the database via psql:"
-  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost -p 15432 $APP_DB_NAME"
+  echo "  PGUSER=$APP_DB_USER PGPASSWORD=$APP_DB_PASS psql -h localhost -p 15432 $DATA_DB_NAME"
 }
 
 export DEBIAN_FRONTEND=noninteractive
@@ -63,7 +71,7 @@ fi
 apt-get update
 apt-get -y upgrade
 
-apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION"
+apt-get -y install "postgresql-$PG_VERSION" "postgresql-contrib-$PG_VERSION" "postgresql-$PG_VERSION-postgis"
 
 PG_CONF="/etc/postgresql/$PG_VERSION/main/postgresql.conf"
 PG_HBA="/etc/postgresql/$PG_VERSION/main/pg_hba.conf"
@@ -82,8 +90,10 @@ cat << EOF | su - postgres -c psql
 -- Create the database user:
 CREATE USER $APP_DB_USER WITH PASSWORD '$APP_DB_PASS';
 
--- Create the database:
-CREATE DATABASE $APP_DB_NAME WITH OWNER $APP_DB_USER;
+-- Create the databases:
+CREATE DATABASE $DATA_DB_NAME WITH OWNER $APP_DB_USER;
+CREATE DATABASE $META_DB_NAME WITH OWNER $APP_DB_USER;
+CREATE DATABASE $GIS_DB_NAME WITH OWNER $APP_DB_USER;
 EOF
 
 # Tag the provision time:
