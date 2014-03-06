@@ -1,7 +1,7 @@
 ### What is it?
 
 A Vagrant configuration that starts up the PostgreSQL databases required
-by tDAR in a virtual machine for local application development.
+by [tDAR] in a virtual machine for local application development.
 
 Based on this most excellent [code](https://github.com/jackdb/pg-app-dev-vm) and
 [article](https://wiki.postgresql.org/wiki/PostgreSQL_For_Development_With_Vagrant) 
@@ -68,5 +68,6 @@ on the virtual machine. It will look something like this:
 
 This is released under the MIT license. See the file [LICENSE](LICENSE).
 
-* [Virtual Box](https://www.virtualbox.org/)
-* [Vagrant](http://www.vagrantup.com/)
+[tDAR]: http://www.tdar.org/
+[Virtual Box]: https://www.virtualbox.org/
+[Vagrant]: http://www.vagrantup.com/
