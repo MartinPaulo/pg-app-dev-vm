@@ -13,7 +13,7 @@ First install [Vagrant] and [Virtual Box].
 Then, run the following to create a new PostgreSQL app dev virtual machine:
 
 	# Clone it locally:
-    $ git clone https://github.com/MartinPaulo/pg-app-dev-vm TdarDbVm
+    $ git clone https://github.com/MartinPaulo/pg-tdar-dev-vm.git TdarDbVm
 
     # Enter the cloned directory:
     $ cd TdarDbVm
