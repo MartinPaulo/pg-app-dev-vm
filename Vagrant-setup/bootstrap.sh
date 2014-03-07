@@ -86,6 +86,8 @@ echo "host    all             all             all                     md5" >> "$
 # Restart so that all new config is loaded:
 service postgresql restart
 
+set PGPASSWORD="$APP_DB_PASS"
+
 cat << EOF | su - postgres -c psql
 -- Create the database user:
 CREATE USER $APP_DB_USER WITH PASSWORD '$APP_DB_PASS';
@@ -95,6 +97,18 @@ CREATE DATABASE $DATA_DB_NAME WITH OWNER $APP_DB_USER;
 CREATE DATABASE $META_DB_NAME WITH OWNER $APP_DB_USER;
 CREATE DATABASE $GIS_DB_NAME WITH OWNER $APP_DB_USER;
 EOF
+
+echo "loading schema based on the latest stable release"
+psql -U tdar -h localthost -f /vagrant/tdarmetadata_schema.sql tdarmetadata > log.txt
+
+echo "loading controlled data"
+psql -U tdar -h localthost -f /vagrant/tdarmetadata_init.sql tdarmetadata >> log.txt
+
+echo "loading sample data"
+psql -U tdar -h localthost -f /vagrant/tdarmetadata_sample_data.sql tdarmetadata >> log.txt
+
+echo "running latest upgrade-db script to bring up to current rev"
+psql -U tdar -h localthost -f /vagrant/upgrade_scripts/upgrade-db.sql tdarmetadata >> log.txt
 
 # Tag the provision time:
 date > "$PROVISIONED_ON"
