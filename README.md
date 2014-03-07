@@ -56,13 +56,16 @@ on the virtual machine. It will look something like this:
     psql access to app database user via VM:
       vagrant ssh
       sudo su - postgres
-      PGUSER=myapp PGPASSWORD=dbpass psql -h localhost myapp
+      PGUSER=tdar PGPASSWORD=tdar psql -h localhost tdardata
 
     Env variable for application development:
-      DATABASE_URL=postgresql://myapp:dbpass@localhost:15432/myapp
+      DATABASE_URL=postgresql://tdar:tdar@localhost:15432/tdardata
+      
+    URL for jdbc access:
+      jdbc:postgresql://localhost:15432/tdardata
 
     Local command to access the database via psql:
-      PGUSER=myapp PGPASSWORD=dbpass psql -h localhost -p 15432 myapp
+      PGUSER=tdar PGPASSWORD=tdar psql -h localhost -p 15432 tdardata
 
 ### License
 
