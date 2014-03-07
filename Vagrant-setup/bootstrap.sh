@@ -107,7 +107,7 @@ echo "loading sample data"
 su - postgres -c 'psql -f /vagrant/tdarmetadata_sample_data.sql tdarmetadata >> log.txt'
 
 echo "running latest upgrade-db script to bring up to current rev"
-su - postgres -c 'psql -f /vagrant/upgrade_scripts/upgrade-db.sql tdarmetadata >> log.txt'
+su - postgres -c 'psql -f /vagrant/upgrade-db.sql tdarmetadata >> log.txt'
 
 # Tag the provision time:
 date > "$PROVISIONED_ON"
