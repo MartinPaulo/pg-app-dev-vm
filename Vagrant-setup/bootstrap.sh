@@ -98,16 +98,16 @@ CREATE DATABASE $GIS_DB_NAME WITH OWNER $APP_DB_USER;
 EOF
 
 echo "loading schema based on the latest stable release"
-su - postgres -c psql -f /vagrant/tdarmetadata_schema.sql tdarmetadata > log.txt
+su - postgres -c 'psql -f /vagrant/tdarmetadata_schema.sql tdarmetadata > log.txt'
 
 echo "loading controlled data"
-su - postgres -c psql -f /vagrant/tdarmetadata_init.sql tdarmetadata >> log.txt
+su - postgres -c 'psql -f /vagrant/tdarmetadata_init.sql tdarmetadata >> log.txt'
 
 echo "loading sample data"
-su - postgres -c psql -f /vagrant/tdarmetadata_sample_data.sql tdarmetadata >> log.txt
+su - postgres -c 'psql -f /vagrant/tdarmetadata_sample_data.sql tdarmetadata >> log.txt'
 
 echo "running latest upgrade-db script to bring up to current rev"
-su - postgres -c psql -f /vagrant/upgrade_scripts/upgrade-db.sql tdarmetadata >> log.txt
+su - postgres -c 'psql -f /vagrant/upgrade_scripts/upgrade-db.sql tdarmetadata >> log.txt'
 
 # Tag the provision time:
 date > "$PROVISIONED_ON"
