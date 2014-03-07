@@ -20,6 +20,13 @@ Then, run the following to create a new PostgreSQL app dev virtual machine:
 
     # Delete the old .git and README:
     $ rm -rf README.md .git
+    
+    # copy the following files from the tDAR source tree into the same directory as the file named
+    # Vagrantfile:
+    # tdarmetadata_init.sql
+    # tdarmetadata_schema.sql
+    # tdarmetadata_sample_data.sql
+    # upgrade-db.sql
 
 ### Usage
 
